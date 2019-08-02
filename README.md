@@ -8,5 +8,5 @@ $ npm install
 
 ### Run
 ```sh
-$ DEBUG=express-pug-template:* npm start
+$ DEBUG=admin-dashboard:* npm start
 ```
