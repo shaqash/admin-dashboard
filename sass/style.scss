@@ -1,0 +1,31 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url('/images/body-background.jpg');
+}
+
+h1 {
+  font-size: 4em
+}
+
+#login-form {
+  margin-top: 5em;
+  margin-left: 15em;
+  width: fit-content;
+  width: -moz-fit-content;
+
+  input {
+    display: block;
+    margin-bottom: 2em;
+  }
+
+  button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  label {
+    font-size: 2em;
+  }
+}
