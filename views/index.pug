@@ -1,11 +1,14 @@
 extends layout
 
 block content
-  
-  form#login-form(action="/", method="post")
+  form#login-form(action="/", onsubmit='return checkForm()', method="post")
     h1= 'Login'
     label(for="username") Username:
-    input(type="text",id='username', name="username", placeholder='username')
+    input(type="text",id='username', name="username", placeholder='username' )
     label(for="password") Password:
-    input(type="password",id='password', name="password", placeholder='password')
+    input(type="password",id='password', name="password", placeholder='password', required)
     button(type="submit") Submit
+    
+  p#form-message #{result}
+
+  script(src="/javascripts/source.js")
