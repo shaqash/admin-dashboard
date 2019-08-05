@@ -1,28 +1,16 @@
 const express = require('express');
 const router = new express.Router();
+const User = require('../models/User');
 
 /**
  * Validates the post request return an answer
  * @param {Request} req post request
  * @return {String} an answer for the validation
  */
-function validateRequest(req) {
-  const USERNAME = req.body.username;
-  const PASSWORD = req.body.password;
-
-  if (req && USERNAME && PASSWORD) {
-    if (PASSWORD.length < 2) {
-      return 'something failed';
-    } else {
-      return 'success';
-    }
-  }
-  return 'something failed';
-}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('home');
+  res.render('index');
 });
 
 router.get('/login', function(req, res, next) {
@@ -33,8 +21,27 @@ router.get('/sign-up', function(req, res, next) {
   res.render('sign-up');
 });
 
-router.post('/*', (req, res, next) => {
-  res.render('index', {result: validateRequest(req)});
+router.post('/sign-up', (req, res, next) => {
+  const {name, username, password, password2} = req.body;
+  if (!name || !username || !password || !password2) {
+    res.render('sign-up', {error: 'not all fields are filled'});
+  } else if (password !== password2) {
+    res.render('sign-up', {error: 'passwords must match'});
+  } else {
+    User.findOne({username: username}).then((user) => {
+      if (user) {
+        res.render('sign-up', {error: 'username already exits'});
+      } else {
+        const user = new User({name, username, password});
+        user.save().then(() => {
+          res.render('login');
+        });
+      }
+    });
+  }
+  // const user = new User({name, username, password});
+  //   console.log(user);
+  //   res.render('login');
 });
 
 module.exports = router;
