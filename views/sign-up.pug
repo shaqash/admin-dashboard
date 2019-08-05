@@ -1,6 +1,11 @@
 extends layout
 
 block content
+  if error
+    .alert.alert-warning.alert-dismissible.fade.show(role='alert')
+      strong #{error}
+      button.close(type='button' data-dismiss='alert' aria-label='Close')
+        span(aria-hidden='true') &times;
   form.sign-up-form.mx-auto(action="/sign-up", method="post")
     .form-group
       label(name='name') Name:
@@ -12,7 +17,7 @@ block content
       label(name='password') Password:
       input.form-control(type="password", name='password', id='password')
     .form-group
-      label(name='password') Confirm password:
-      input.form-control(type="password", name='password', id='password')
+      label(name='password2') Confirm password:
+      input.form-control(type="password", name='password2', id='password2')
     .text-center
       button.btn.btn-primary(type="submit") Sign Up
