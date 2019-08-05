@@ -7,6 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('admin-dashboard:server');
 const http = require('http');
+const mongoose = require('mongoose');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,13 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
+// Connect to database
+mongoose.connect('mongodb://localhost:27017/myapp', {useNewUrlParser: true}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((err) => {
+  console.log(err);
+});
 
 /**
  * Listen on provided port, on all network interfaces.
