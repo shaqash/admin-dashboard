@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  form.sign-up-form.mx-auto(action="/sign-up", method="post")
+    .form-group
+      label(name='name') Name:
+      input.form-control(type="text", name='name', id='name')
+    .form-group
+      label(name='username') Username:
+      input.form-control(type="text", name='username', id='username')
+    .form-group
+      label(name='password') Password:
+      input.form-control(type="password", name='password', id='password')
+    .form-group
+      label(name='password') Confirm password:
+      input.form-control(type="password", name='password', id='password')
+    .text-center
+      button.btn.btn-primary(type="submit") Sign Up

@@ -22,7 +22,15 @@ function validateRequest(req) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+  res.render('home');
+});
+
+router.get('/login', function(req, res, next) {
+  res.render('login');
+});
+
+router.get('/sign-up', function(req, res, next) {
+  res.render('sign-up');
 });
 
 router.post('/*', (req, res, next) => {

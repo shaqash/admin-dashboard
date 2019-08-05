@@ -1,14 +1,6 @@
 extends layout
 
 block content
-  form#login-form(action="/", onsubmit='return checkForm()', method="post")
-    h1= 'Login'
-    label(for="username") Username:
-    input(type="text",id='username', name="username", placeholder='username' )
-    label(for="password") Password:
-    input(type="password",id='password', name="password", placeholder='password', required)
-    button#btn.btn-primary.btn-lg(type="submit") Submit
-    
-  p#form-message #{result}
-
-  script(src="/javascripts/source.js")
+  .container.border-primary.rounded.mx-auto
+    a.btn-lg.btn-primary(href='/login') Login
+    a.btn-lg.btn-primary(href='/sign-up') Sign Up
