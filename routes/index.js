@@ -27,6 +27,9 @@ router.post('/sign-up', (req, res, next) => {
     res.render('sign-up', {error: 'not all fields are filled'});
   } else if (password !== password2) {
     res.render('sign-up', {error: 'passwords must match'});
+  } else if (password.length < 6) {
+    res.render('sign-up', {error: 'password needs to be 6 characters or ' +
+     'longer'});
   } else {
     User.findOne({username: username}).then((user) => {
       if (user) {
@@ -39,9 +42,6 @@ router.post('/sign-up', (req, res, next) => {
       }
     });
   }
-  // const user = new User({name, username, password});
-  //   console.log(user);
-  //   res.render('login');
 });
 
 module.exports = router;
