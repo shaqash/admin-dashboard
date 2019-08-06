@@ -1,57 +1,31 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
-body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-image: url('/images/body-background.jpg');
-}
 .container {
   
   margin-top: 20vh;
-  text-align: center;
-  max-width: 10em;
-  a {
-    margin-bottom: 2em;
-    display: block;
-  }
-}
-h1 {
-  font-size: 4em
 }
 
-.sign-up-form {
-  max-width: 20em;
-  margin-top: 20vh;
-  font-size: 3em;
-
-  button {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-#login-form {
-  margin-top: 5em;
-  margin-left: 15em;
-  width: fit-content;
-  width: -moz-fit-content;
-
+.sign-form {
   input {
+    width: 100%;
     display: block;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
   }
 
   button {
+    width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
   }
 
   label {
-    font-size: 2em;
+    width: 100%;
+    font-weight: 700 !important;
   }
 }
 
-#form-message {
-  font-size: 1.5em;
-  margin-left: 9em;
+.fakeimg {
+height: 200px;
+background: #aaa;
 }
