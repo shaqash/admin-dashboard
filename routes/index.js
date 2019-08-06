@@ -1,6 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 /**
  * Validates the post request return an answer
@@ -35,12 +36,37 @@ router.post('/sign-up', (req, res, next) => {
       if (user) {
         res.render('sign-up', {error: 'username already exits'});
       } else {
-        const user = new User({name, username, password});
-        user.save().then(() => {
-          res.render('login');
+        bcrypt.hash(password, 10, (err, hash) => {
+          const user = new User({name, username, password: hash});
+          user.save().then(() => {
+            res.render('login', {success: 'Sign up successful, please log in'});
+          });
         });
       }
     });
+  }
+});
+
+router.post('/login', (req, res, next) => {
+  const {username, password} = req.body;
+
+  console.log(`${username} ${password}`);
+  if (!username || !password) {
+    res.render('login', {error: 'Please enter username and password'});
+  } else {
+    User.findOne({username: username}).then((user) => {
+      if (user) {
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (isMatch) {
+            res.render('home', {name: user.name});
+          } else {
+            res.render('login', {error: 'Incorrect username or password'});
+          }
+        });
+      } else {
+        res.render('login', {error: 'Incorrect username or password'});
+      }
+    } );
   }
 });
 

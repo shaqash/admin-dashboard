@@ -7,13 +7,23 @@ block content
       .col-sm-5
         h2 Login
         
+        if error
+          .alert.alert-warning.alert-dismissible.fade.show(role='alert')
+            strong #{error}
+            button.close(type='button' data-dismiss='alert' aria-label='Close')
+              span(aria-hidden='true') &times;
+        if success
+          .alert.alert-success.alert-dismissible.fade.show(role='alert')
+            strong #{success}
+            button.close(type='button' data-dismiss='alert' aria-label='Close')
+              span(aria-hidden='true') &times;
         form.sign-form.mx-auto(action="/login", method="post")
           .form-group
             label.font-weight-bold Username
-            input#username.form-control(type='text', name='username')
+            input#username.form-control(type='text', name='username', required)
           .form-group
             label.font-weight-bold Password
-            input#password.form-control(type='password', name='password')
+            input#password.form-control(type='password', name='password', required)
           button.btn.btn-primary(type="submit") Login
         br
         ul.nav.nav-pills.flex-row
