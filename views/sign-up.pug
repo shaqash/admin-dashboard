@@ -5,7 +5,7 @@ block content
     .row
       .col-sm-5
         h2 Sign up
-        p Some text about me in culpa qui officia deserunt mollit anim..
+        
         if error
           .alert.alert-warning.alert-dismissible.fade.show(role='alert')
             strong #{error}
@@ -14,18 +14,17 @@ block content
         form.sign-form.mx-auto(action="/sign-up", method="post")
           .form-group
             label(name='name') Name
-            input.form-control(type="text", name='name', id='name')
+            input.form-control(type="text", name='name', id='name', required)
           .form-group
             label(name='username') Username
-            input.form-control(type="text", name='username', id='username')
+            input.form-control(type="text", name='username', id='username', required)
           .form-group
             label(name='password') Password
-            input.form-control(type="password", name='password', id='password')
+            input.form-control(type="password", name='password', id='password', required)
           .form-group
             label(name='password2') Confirm password
-            input.form-control(type="password", name='password2', id='password2')
-          .text-center
-            button.btn.btn-primary(type="submit") Sign Up
+            input.form-control(type="password", name='password2', id='password2', required)
+          button.btn.btn-primary(type="submit") Sign Up
         br
         ul.nav.nav-pills.flex-row
           li.nav-item

@@ -6,19 +6,19 @@ block content
     .row
       .col-sm-5
         h2 Login
-        p Some text about me in culpa qui officia deserunt mollit anim..
+        
         form.sign-form.mx-auto(action="/login", method="post")
           .form-group
             label.font-weight-bold Username
-            input#username.login(type='username' name='username')
+            input#username.form-control(type='text', name='username')
           .form-group
             label.font-weight-bold Password
-            input#password.login(type='password' name='password')
+            input#password.form-control(type='password', name='password')
           button.btn.btn-primary(type="submit") Login
-          br
-          ul.nav.nav-pills.flex-row
-            li.nav-item
-              a.nav-link(href='/sign-up') Sign Up!
-            li.nav-item
-              a.nav-link.disabled(href='#') Forgot password?
-          hr.d-sm-none
+        br
+        ul.nav.nav-pills.flex-row
+          li.nav-item
+            a.nav-link(href='/sign-up') Sign Up!
+          li.nav-item
+            a.nav-link.disabled(href='#') Forgot password?
+        hr.d-sm-none
