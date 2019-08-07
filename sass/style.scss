@@ -1,4 +1,10 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+$fa-font-path:"fonts";
+@import "../node_modules/font-awesome/scss/font-awesome";
+.icon-user {
+  @extend .fa;
+  @extend .fa-user;
+}
 
 .container {
   margin-top: 15vh;
