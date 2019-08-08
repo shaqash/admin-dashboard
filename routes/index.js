@@ -22,6 +22,21 @@ router.get('/sign-up', function(req, res, next) {
   res.render('sign-up');
 });
 
+router.get('/home', (req, res, next) => {
+  if (req.session.username) {
+    console.log(req.session.username);
+
+    res.render('home', {name: req.session.name});
+  } else {
+    res.redirect('/login');
+  }
+});
+
+router.get('/sign-out', (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/login');
+});
+
 router.post('/sign-up', (req, res, next) => {
   const {name, username, password, password2} = req.body;
   if (!name || !username || !password || !password2) {
@@ -50,7 +65,6 @@ router.post('/sign-up', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   const {username, password} = req.body;
 
-  console.log(`${username} ${password}`);
   if (!username || !password) {
     res.render('login', {error: 'Please enter username and password'});
   } else {
@@ -58,7 +72,9 @@ router.post('/login', (req, res, next) => {
       if (user) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (isMatch) {
-            res.render('home', {name: user.name});
+            req.session.username = user.username;
+            req.session.name = user.name;
+            res.redirect('/home');
           } else {
             res.render('login', {error: 'Incorrect username or password'});
           }

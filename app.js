@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -16,6 +18,13 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(session({
+  secret: 'bipbop',
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({url: 'mongodb://localhost/myapp'}),
+  cookie: {httpOnly: true, maxAge: 180*60*1000},
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
