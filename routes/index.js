@@ -24,8 +24,6 @@ router.get('/sign-up', function(req, res, next) {
 
 router.get('/home', (req, res, next) => {
   if (req.session.username) {
-    console.log(req.session.username);
-
     res.render('home', {name: req.session.name});
   } else {
     res.redirect('/login');
@@ -35,6 +33,16 @@ router.get('/home', (req, res, next) => {
 router.get('/sign-out', (req, res, next) => {
   req.session.destroy();
   res.redirect('/login');
+});
+
+router.get('/users.json', (req, res, next)=>{
+  if (!req.session.username) {
+    res.status(403).send('403 - forbidden');
+  } else {
+    User.find().then((users) => {
+      res.send(users);
+    });
+  }
 });
 
 router.post('/sign-up', (req, res, next) => {

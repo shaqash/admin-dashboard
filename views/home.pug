@@ -43,3 +43,15 @@ block content
           | . The top navbar is optional, and just for demonstration. Just create an element with the 
           code #menu-toggle
           |  ID which will toggle the menu when clicked.
+        br
+        table.table#users-table(style={display: 'none'})
+          thead.thead-dark
+            tr
+              th(scope='col') #
+              th(scope='col') Username
+              th(scope='col') Password hash
+              th(scope='col') Name
+              th(scope='col') Update
+              th(scope='col') Delete
+          tbody#table-body
+
