@@ -17,10 +17,37 @@ function makeElement(tag, text) {
  */
 function createButton(icon) {
   const button = document.createElement('button');
-  button.classList.add('btn', 'btn-default');
+  button.classList.add('btn');
   const iconElement = document.createElement('i');
-  iconElement.classList.add('fas', icon, 'icon-user');
+  iconElement.classList.add('fas', icon, 'icon-user', 'fa-2x');
   button.appendChild(iconElement);
+  return button;
+}
+
+/**
+ * Creates a delete button
+ * @param {*} username
+ * @return {object} button element
+ */
+function createDeleteButton(username) {
+  const button = createButton('fa-trash');
+  button.classList.add('delete-button');
+  button.addEventListener('click', () => {
+    // TODO complete delete feature
+  });
+  return button;
+}
+
+/**
+ * Creates an update button
+ * @param {*} username
+ * @return {object} button element
+ */
+function createUpdateButton(username) {
+  const button = createButton('fa-edit');
+  button.addEventListener('click', () => {
+    // TODO complete update feature
+  });
   return button;
 }
 
@@ -44,10 +71,10 @@ function createRow(index, username, password, name) {
   const nameElement = makeElement('td', name);
   row.appendChild(nameElement);
   const editButton = document.createElement('td');
-  editButton.appendChild(createButton('fa-edit'));
+  editButton.appendChild(createUpdateButton(username));
   row.appendChild(editButton);
   const trashButton = document.createElement('td');
-  trashButton.appendChild(createButton('fa-trash'));
+  trashButton.appendChild(createDeleteButton(username));
   row.appendChild(trashButton);
   return row;
 }

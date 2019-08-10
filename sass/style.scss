@@ -34,5 +34,17 @@ $fa-font-path:"fonts";
   text-align: center;
   button {
     padding: 0;
+
+
+  }
+  .btn:hover {
+    color: #007bff;
+  }
+  .delete-button:hover {
+    color:red
+  }
+  td {
+    vertical-align: center;
+    vertical-align: -moz-middle-with-baseline;
   }
 }
