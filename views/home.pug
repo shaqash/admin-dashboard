@@ -35,16 +35,21 @@ block content
         p
           | This is the users section.
         br
-        table.table#users-table(style={display: 'none'})
-          thead.thead-dark
-            tr
-              th(scope='col') #
-              th(scope='col') Username
-              th(scope='col') Password hash
-              th(scope='col') Name
-              th(scope='col') Update
-              th(scope='col') Delete
-          tbody#table-body
+        .table-responsive
+          table.table#users-table(style={display: 'none'})
+            thead.thead-dark
+              tr
+                th(scope='col') #
+                th(scope='col') Username
+                th(scope='col') Password hash
+                th(scope='col') Name
+                th(scope='col') Update
+                th(scope='col') Delete
+            tbody#table-body
+            tfoot#table-footer
+              td(colspan='6')
+                button.btn
+                  i.fas.fa-plus.fa-2x.icon-user
       .container-fluid
         h1#other.mt-4 Other section
         p
