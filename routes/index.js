@@ -75,7 +75,7 @@ router.delete('/users/:username/', (req, res, next) => {
   if (!req.session.username) {
     res.status(403).send('403 - forbidden');
   } else {
-    User.findOneAndRemove(username, (err) => {
+    User.deleteOne({'username': username}, (err) => {
       if (err) return next(err);
       res.render('home', {success: 'Deletion successful'});
     });
