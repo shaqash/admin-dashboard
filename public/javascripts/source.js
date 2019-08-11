@@ -34,6 +34,14 @@ function createDeleteButton(username) {
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
     // TODO complete delete feature
+    fetch(`${window.location.origin}/users/${username}`, {method: 'DELETE',
+      credentials: 'same-origin'}).then((res) => {
+      if (res.status === 200) {
+        const table = document.getElementById('table-body');
+        const row = document.getElementById(`${username}-row`);
+        table.removeChild(row);
+      }
+    });
   });
   return button;
 }
@@ -76,6 +84,7 @@ function createRow(index, username, password, name) {
   const trashButton = document.createElement('td');
   trashButton.appendChild(createDeleteButton(username));
   row.appendChild(trashButton);
+  row.id = `${username}-row`;
   return row;
 }
 
