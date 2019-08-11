@@ -7,8 +7,8 @@ block content
       .sidebar-heading Admin dashboard 
       .list-group.list-group-flush
         a.list-group-item.list-group-item-action.bg-light(href='#') Dashboard
-        a.list-group-item.list-group-item-action.bg-light(href='#') Users
-        a.list-group-item.list-group-item-action.bg-light(href='#') Overview
+        a.list-group-item.list-group-item-action.bg-light(href='#users') Users
+        a.list-group-item.list-group-item-action.bg-light(href='#other') Overview
     // /#sidebar-wrapper
     // Page Content
     #page-content-wrapper
@@ -23,26 +23,17 @@ block content
               a.nav-link(href='#')
                 | Home 
                 span.sr-only (current)
-            li.nav-item
-              a.nav-link(href='#') Link
             li.nav-item.dropdown
               a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                 | #{name}
               .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
                 a.dropdown-item(href='#') Profile
-                a.dropdown-item(href='#') Another action
                 .dropdown-divider
                 a.dropdown-item(href='/sign-out') Sign out
       .container-fluid
-        h1.mt-4 Simple Sidebar
+        h1#users.mt-4 Users
         p
-          | The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.
-        p
-          | Make sure to keep all page content within the 
-          code #page-content-wrapper
-          | . The top navbar is optional, and just for demonstration. Just create an element with the 
-          code #menu-toggle
-          |  ID which will toggle the menu when clicked.
+          | This is the users section.
         br
         table.table#users-table(style={display: 'none'})
           thead.thead-dark
@@ -54,4 +45,9 @@ block content
               th(scope='col') Update
               th(scope='col') Delete
           tbody#table-body
+      .container-fluid
+        h1#other.mt-4 Other section
+        p
+          | This is the other section.
+        br
 
