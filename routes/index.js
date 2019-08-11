@@ -70,6 +70,18 @@ router.post('/sign-up', (req, res, next) => {
   }
 });
 
+router.delete('/users/:username/', (req, res, next) => {
+  const {username} = req.params;
+  if (!username) {
+    res.status(403).send('403 - forbidden');
+  } else {
+    User.findOneAndRemove(username, (err) => {
+      if (err) return next(err);
+      res.render('home', {success: 'Deletion successful'});
+    });
+  }
+});
+
 router.post('/login', (req, res, next) => {
   const {username, password} = req.body;
 
