@@ -33,7 +33,6 @@ function createDeleteButton(username) {
   const button = createButton('fa-trash');
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
-    // TODO complete delete feature
     fetch(`${window.location.origin}/users/${username}`, {method: 'DELETE',
       credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
