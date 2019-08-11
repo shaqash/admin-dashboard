@@ -72,7 +72,7 @@ router.post('/sign-up', (req, res, next) => {
 
 router.delete('/users/:username/', (req, res, next) => {
   const {username} = req.params;
-  if (!username) {
+  if (!req.session.username) {
     res.status(403).send('403 - forbidden');
   } else {
     User.findOneAndRemove(username, (err) => {
