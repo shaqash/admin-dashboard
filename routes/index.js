@@ -10,19 +10,7 @@ const bcrypt = require('bcrypt');
  */
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('login');
-});
-
-router.get('/login', function(req, res, next) {
-  res.render('login');
-});
-
-router.get('/sign-up', function(req, res, next) {
-  res.render('sign-up');
-});
-
-router.get('/home', (req, res, next) => {
+router.get('/', function(req, res) {
   if (req.session.username) {
     res.render('home', {name: req.session.name});
   } else {
@@ -30,7 +18,27 @@ router.get('/home', (req, res, next) => {
   }
 });
 
-router.get('/sign-out', (req, res, next) => {
+router.get('/login', function(req, res) {
+  if (req.session.username) {
+    res.render('login', {error: 'Your other users will be logged out'});
+  } else {
+    res.render('login');
+  }
+});
+
+router.get('/sign-up', function(req, res) {
+  res.render('sign-up');
+});
+
+router.get('/home', (req, res) => {
+  if (req.session.username) {
+    res.render('home', {name: req.session.name});
+  } else {
+    res.redirect('/login');
+  }
+});
+
+router.get('/sign-out', (req, res) => {
   req.session.destroy();
   res.redirect('/login');
 });
@@ -94,7 +102,7 @@ router.post('/login', (req, res, next) => {
           if (isMatch) {
             req.session.username = user.username;
             req.session.name = user.name;
-            res.redirect('/home');
+            res.redirect('/');
           } else {
             res.render('login', {error: 'Incorrect username or password'});
           }
