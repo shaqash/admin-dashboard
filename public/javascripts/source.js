@@ -61,7 +61,6 @@ function createDestroyButton(sid, index) {
       if (res.status === 200) {
         const table = document.getElementById('sessions-body');
         const row = document.getElementById(`${index}-row`);
-        console.log(row);
         table.removeChild(row);
       }
     });
@@ -168,7 +167,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
       }).then((json) => {
         json.forEach((value, key) => {
           const uname = JSON.parse(value.session)['username'];
-          console.log(value._id);
           const row = createRowSessions(key+1, value.expires, uname, value._id);
           sessionBody.appendChild(row);
         });
