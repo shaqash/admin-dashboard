@@ -37,8 +37,31 @@ function createDeleteButton(username) {
     fetch(`${window.location.origin}/users/${username}`, {method: 'DELETE',
       credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
-        const table = document.getElementById('table-body');
+        const table = document.getElementById('users-body');
         const row = document.getElementById(`${username}-row`);
+        table.removeChild(row);
+      }
+    });
+  });
+  return button;
+}
+
+/**
+ * Creates a delete button
+ * @param {*} sid
+ * @param {*} index
+ * @return {object} button element
+ */
+function createDestroyButton(sid, index) {
+  const button = createButton('fa-trash');
+  button.classList.add('delete-button');
+  button.addEventListener('click', () => {
+    fetch(`${window.location.origin}/sessions/${sid}`, {method: 'DELETE',
+      credentials: 'same-origin'}).then((res) => {
+      if (res.status === 200) {
+        const table = document.getElementById('sessions-body');
+        const row = document.getElementById(`${index}-row`);
+        console.log(row);
         table.removeChild(row);
       }
     });
@@ -68,7 +91,7 @@ function createUpdateButton(username) {
  * @param {string} name
  * @return {object} row element
  */
-function createRow(index, username, password, name) {
+function createRowUsers(index, username, password, name) {
   const row = document.createElement('tr');
   const indexElement = makeElement('td', index);
   row.appendChild(indexElement);
@@ -88,6 +111,30 @@ function createRow(index, username, password, name) {
   return row;
 }
 
+/**
+ * Creates a row element.
+ *
+ * @param {string} index
+ * @param {string} expires
+ * @param {string} uname
+ * @param {string} sid
+ * @return {object} row element
+ */
+function createRowSessions(index, expires, uname, sid) {
+  const row = document.createElement('tr');
+  const indexElement = makeElement('td', index);
+  row.appendChild(indexElement);
+  const expiresElement = makeElement('td', expires);
+  row.appendChild(expiresElement);
+  const usernameElement = makeElement('td', uname);
+  row.appendChild(usernameElement);
+  const destroyButton = document.createElement('td');
+  destroyButton.appendChild(createDestroyButton(sid, index));
+  row.appendChild(destroyButton);
+  row.id = `${index}-row`;
+  return row;
+}
+
 // Toggle side bar
 const toggleButton = document.getElementById('menu-toggle');
 const wrapper = document.getElementById('wrapper');
@@ -97,17 +144,34 @@ toggleButton.addEventListener('click', (e) => {
 });
 
 const usersTable = document.getElementById('users-table');
-const tableBody = document.getElementById('table-body');
+const usersBody = document.getElementById('users-body');
 document.addEventListener('DOMContentLoaded', (event) => {
   fetch(window.location.origin + '/users.json', {credentials: 'same-origin'})
       .then((res) => {
         return res.json();
       }).then((json) => {
         json.forEach((value, key) => {
-          const row = createRow(key+1, value.username, value.password,
+          const row = createRowUsers(key+1, value.username, value.password,
               value.name);
-          tableBody.appendChild(row);
+          usersBody.appendChild(row);
         });
         usersTable.style.display='table';
+      });
+});
+
+const sessionTable = document.getElementById('sessions-table');
+const sessionBody = document.getElementById('sessions-body');
+document.addEventListener('DOMContentLoaded', (event) => {
+  fetch(window.location.origin + '/sessions/json', {credentials: 'same-origin'})
+      .then((res) => {
+        return res.json();
+      }).then((json) => {
+        json.forEach((value, key) => {
+          const uname = JSON.parse(value.session)['username'];
+          console.log(value._id);
+          const row = createRowSessions(key+1, value.expires, uname, value._id);
+          sessionBody.appendChild(row);
+        });
+        sessionTable.style.display='table';
       });
 });

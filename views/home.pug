@@ -8,7 +8,7 @@ block content
       .list-group.list-group-flush
         a.list-group-item.list-group-item-action.bg-light(href='#') Dashboard
         a.list-group-item.list-group-item-action.bg-light(href='#users') Users
-        a.list-group-item.list-group-item-action.bg-light(href='#other') Overview
+        a.list-group-item.list-group-item-action.bg-light(href='#other') Sessions
     // /#sidebar-wrapper
     // Page Content
     #page-content-wrapper
@@ -44,10 +44,18 @@ block content
               th(scope='col') Name
               th(scope='col') Update
               th(scope='col') Delete
-          tbody#table-body
+          tbody#users-body
       .container-fluid
-        h1#other.mt-4 Other section
+        h1#other.mt-4 Sessions
         p
-          | This is the other section.
+          | This is the sessions section.
         br
+        table.table#sessions-table(style={display: 'none'})
+          thead.thead-dark
+            tr
+              th(scope='col') #
+              th(scope='col') Expires
+              th(scope='col') User
+              th(scope='col') Destroy
+          tbody#sessions-body
 
