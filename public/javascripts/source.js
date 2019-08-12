@@ -98,7 +98,7 @@ toggleButton.addEventListener('click', (e) => {
 const usersTable = document.getElementById('users-table');
 const tableBody = document.getElementById('table-body');
 document.addEventListener('DOMContentLoaded', (event) => {
-  fetch(window.location.origin + '/users.json', {credentials: 'same-origin'})
+  fetch(window.location.origin + '/users/json', {credentials: 'same-origin'})
       .then((res) => {
         return res.json();
       }).then((json) => {

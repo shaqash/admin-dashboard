@@ -12,7 +12,7 @@ block content
             button.close(type='button' data-dismiss='alert' aria-label='Close')
               span(aria-hidden='true') &times;
 
-        form.sign-form.mx-auto(action="/sign-up", method="post")
+        form.sign-form.mx-auto(action="/users/sign-up", method="post")
           .form-group
             label(name='name') Name
             input.form-control(type="text", name='name', id='name', required)
