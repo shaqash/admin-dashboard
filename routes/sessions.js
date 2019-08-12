@@ -19,7 +19,8 @@ router.delete('/:id', (req, res, next) => {
   } else {
     Session.deleteOne({'_id': id}, (err) => {
       if (err) return next(err);
-      res.render('home', {success: 'Deletion successful'});
+      res.status(200).send('ok');
+      console.log('ok');
     });
   }
 });

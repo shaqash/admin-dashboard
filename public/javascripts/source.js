@@ -24,12 +24,15 @@ function createButton(icon) {
   return button;
 }
 
+
 /**
  * Creates a delete button
- * @param {*} username
+ *
+ * @param {string} username
+ * @param {string} index
  * @return {object} button element
  */
-function createDeleteButton(username) {
+function createDeleteButton(username, index) {
   const button = createButton('fa-trash');
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
@@ -38,7 +41,7 @@ function createDeleteButton(username) {
       credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
         const table = document.getElementById('users-body');
-        const row = document.getElementById(`${username}-row`);
+        const row = document.getElementById(`${index}-user-row`);
         table.removeChild(row);
       }
     });
@@ -48,19 +51,19 @@ function createDeleteButton(username) {
 
 /**
  * Creates a delete button
- * @param {*} sid
+ * @param {*} sessionId
  * @param {*} index
  * @return {object} button element
  */
-function createDestroyButton(sid, index) {
+function createDestroyButton(sessionId, index) {
   const button = createButton('fa-trash');
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
-    fetch(`${window.location.origin}/sessions/${sid}`, {method: 'DELETE',
+    fetch(`${window.location.origin}/sessions/${sessionId}`, {method: 'DELETE',
       credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
         const table = document.getElementById('sessions-body');
-        const row = document.getElementById(`${index}-row`);
+        const row = document.getElementById(`${index}-session-row`);
         table.removeChild(row);
       }
     });
@@ -104,9 +107,9 @@ function createRowUsers(index, username, password, name) {
   editButton.appendChild(createUpdateButton(username));
   row.appendChild(editButton);
   const trashButton = document.createElement('td');
-  trashButton.appendChild(createDeleteButton(username));
+  trashButton.appendChild(createDeleteButton(username, index));
   row.appendChild(trashButton);
-  row.id = `${username}-row`;
+  row.id = `${index}-user-row`;
   return row;
 }
 
@@ -115,33 +118,34 @@ function createRowUsers(index, username, password, name) {
  *
  * @param {string} index
  * @param {string} expires
- * @param {string} uname
- * @param {string} sid
+ * @param {string} username
+ * @param {string} sessionId
  * @return {object} row element
  */
-function createRowSessions(index, expires, uname, sid) {
+function createRowSessions(index, expires, username, sessionId) {
   const row = document.createElement('tr');
   const indexElement = makeElement('td', index);
   row.appendChild(indexElement);
   const expiresElement = makeElement('td', expires);
   row.appendChild(expiresElement);
-  const usernameElement = makeElement('td', uname);
+  const usernameElement = makeElement('td', username);
   row.appendChild(usernameElement);
   const destroyButton = document.createElement('td');
-  destroyButton.appendChild(createDestroyButton(sid, index));
+  destroyButton.appendChild(createDestroyButton(sessionId, index));
   row.appendChild(destroyButton);
-  row.id = `${index}-row`;
+  row.id = `${index}-session-row`;
   return row;
 }
 
 // Toggle side bar
 const toggleButton = document.getElementById('menu-toggle');
 const wrapper = document.getElementById('wrapper');
-toggleButton.addEventListener('click', (e) => {
-  e.preventDefault();
-  wrapper.classList.toggle('toggled');
-});
-
+if (toggleButton) {
+  toggleButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    wrapper.classList.toggle('toggled');
+  });
+}
 const usersTable = document.getElementById('users-table');
 const usersBody = document.getElementById('users-body');
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -166,8 +170,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         return res.json();
       }).then((json) => {
         json.forEach((value, key) => {
-          const uname = JSON.parse(value.session)['username'];
-          const row = createRowSessions(key+1, value.expires, uname, value._id);
+          const username = JSON.parse(value.session)['username'];
+          const row = createRowSessions(key+1, value.expires, username,
+              value._id);
           sessionBody.appendChild(row);
         });
         sessionTable.style.display='table';
