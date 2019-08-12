@@ -1,6 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/User');
+const sessionsRouter = require('./sessions.js');
 const bcrypt = require('bcrypt');
 const usersRouter = require('./users');
 
@@ -14,6 +15,8 @@ const usersRouter = require('./users');
 router.get('/', function(req, res, next) {
   res.render('login');
 });
+
+router.use('/sessions', sessionsRouter);
 
 router.get('/login', function(req, res, next) {
   res.render('login');
