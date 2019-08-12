@@ -43,6 +43,7 @@ router.post('/sign-up', (req, res, next) => {
         bcrypt.hash(password, 10, (err, hash) => {
           const user = new User({name, username, password: hash});
           user.save().then(() => {
+            // TODO change url to /login when signing up
             res.render('login', {success: 'Sign up successful, please log in'});
           });
         });
