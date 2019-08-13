@@ -78,7 +78,7 @@ function createDestroyButton(sessionId, index) {
 function createUpdateButton(username) {
   const button = createButton('fa-edit');
   button.addEventListener('click', () => {
-    // TODO complete update feature
+    // TODO complete update feature use input tags and text-align center
   });
   return button;
 }
