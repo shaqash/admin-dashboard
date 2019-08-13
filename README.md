@@ -14,3 +14,7 @@ $ DEBUG=admin-dashboard:* npm start
 ```sh
 $ sass --watch sass:./public/stylesheets/
 ```
+### start db
+```sh
+$ sudo systemctl start mongod
+```
