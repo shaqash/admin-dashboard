@@ -1,5 +1,5 @@
 /**
- * Creates a html elemtent.
+ * Creates an html elemtent.
  *
  * @param {string} tag the element tag
  * @param {string} text the inner text
@@ -10,6 +10,7 @@ function makeElement(tag, text) {
   element.innerText = text;
   return element;
 }
+
 /**
  * Creates button with icon.
  * @param {string} icon font awesome icon text
@@ -23,7 +24,6 @@ function createButton(icon) {
   button.appendChild(iconElement);
   return button;
 }
-
 
 /**
  * Creates a delete button
@@ -92,7 +92,7 @@ function createUpdateButton(username) {
  * @param {string} name
  * @return {object} row element
  */
-function createRowUsers(index, username, password, name) {
+function createUserRow(index, username, password, name) {
   const row = document.createElement('tr');
   const indexElement = makeElement('td', index);
   row.appendChild(indexElement);
@@ -121,7 +121,7 @@ function createRowUsers(index, username, password, name) {
  * @param {string} sessionId
  * @return {object} row element
  */
-function createRowSessions(index, expires, username, sessionId) {
+function createSessionRow(index, expires, username, sessionId) {
   const row = document.createElement('tr');
   const indexElement = makeElement('td', index);
   row.appendChild(indexElement);
@@ -154,7 +154,7 @@ if (usersTable) {
           return res.json();
         }).then((json) => {
           json.forEach((value, key) => {
-            const row = createRowUsers(key+1, value.username, value.password,
+            const row = createUserRow(key+1, value.username, value.password,
                 value.name);
             usersBody.appendChild(row);
           });
@@ -173,7 +173,7 @@ if (sessionTable) {
         }).then((json) => {
           json.forEach((value, key) => {
             const username = JSON.parse(value.session)['username'];
-            const row = createRowSessions(key+1, username, value.expires,
+            const row = createSessionRow(key+1, username, value.expires,
                 value._id);
             sessionBody.appendChild(row);
           });
