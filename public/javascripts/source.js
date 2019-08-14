@@ -136,6 +136,24 @@ function createSessionRow(index, expires, username, sessionId) {
   return row;
 }
 
+/**
+ * Creates a new user row
+ *
+ */
+function createNewUserRow() {
+  const row = document.getElementById('new-user-template').
+      content.cloneNode(true);
+  const userTable = document.getElementById('users-table');
+  userTable.appendChild(row);
+}
+
+const addNewUserButton = document.getElementById('add-user-btn');
+addNewUserButton.addEventListener('click', (event) => {
+  const addNewUserRow = document.getElementById('table-footer');
+  addNewUserRow.style.display = 'none';
+  createNewUserRow();
+});
+
 // Toggle side bar
 const toggleButton = document.getElementById('menu-toggle');
 const wrapper = document.getElementById('wrapper');
