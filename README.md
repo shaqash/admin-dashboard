@@ -2,19 +2,17 @@
 Online admin dashboard - project for learning web development
 
 ### Install modules
-```sh
+```
 $ npm install
+$ npm install -g concurrently
 ```
 
 ### Run
-```sh
-$ DEBUG=admin-dashboard:* npm start
 ```
-### compile css from sass
-```sh
-$ sass --watch sass:./public/stylesheets/
+$ npm start
 ```
-### start db
-```sh
+
+### Start db
+```
 $ sudo systemctl start mongod
 ```
