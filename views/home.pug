@@ -48,8 +48,25 @@ block content
             tbody#users-body
             tfoot#table-footer
               td(colspan='6')
-                button.btn
+                button.btn#add-user-btn
                   i.fas.fa-plus.fa-2x.icon-user
+            template#new-user-template
+              tr#new-user-row
+                td
+                td
+                  input.form-control#new-username(type="text", placeholder='Username')
+                td
+                  .new-user-password
+                    input.form-control#new-password(type="password", placeholder='password')
+                    input.form-control#new-password2(type='password', placeholder='Confirm password')
+                td
+                  input.form-control#new-name(type='text', placeholder='Name')
+                td
+                  button.btn#new-user-approve
+                    i.fas.fa-check.fa-2x.icon-user
+                td
+                  button.btn#new-user-deny
+                    i.fas.fa-times.fa-2x.icon-user
       .container-fluid
         h1#other.mt-4 Sessions
         p

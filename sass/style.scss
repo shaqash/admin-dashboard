@@ -34,17 +34,32 @@ $fa-font-path:"fonts";
   text-align: center;
   button {
     padding: 0;
-
-
   }
+
   .btn:hover {
-    color: #007bff;
+    color:#007bff;
   }
-  .delete-button:hover {
-    color:red
+
+  .delete-button:hover,#new-user-deny:hover {
+    color:rgb(212, 0, 0)
   }
+
   td {
     vertical-align: center;
     vertical-align: -moz-middle-with-baseline;
+    input {
+      text-align: center;
+      display: inline;
+
+    }
+    .new-user-password {
+      display: flex;
+    }
+    #new-password {
+      margin-right: 2em;
+    }
+    #new-user-approve:hover{
+      color: rgb(0, 202, 0);
+    }
   }
 }
