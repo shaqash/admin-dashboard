@@ -4,7 +4,7 @@ Online admin dashboard - project for learning web development
 ### Install modules
 ```
 $ npm install
-$ npm install -g concurrently
+$ sudo npm install -g concurrently nodemon sass
 ```
 
 ### Run
