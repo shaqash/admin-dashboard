@@ -40,7 +40,7 @@ $fa-font-path:"fonts";
     color:#007bff;
   }
 
-  .delete-button:hover,#new-user-deny:hover {
+  .delete-button:hover,#deny-new-user:hover {
     color:rgb(212, 0, 0)
   }
 
@@ -58,7 +58,7 @@ $fa-font-path:"fonts";
     #new-password {
       margin-right: 2em;
     }
-    #new-user-approve:hover{
+    #approve-new-user:hover{
       color: rgb(0, 202, 0);
     }
   }

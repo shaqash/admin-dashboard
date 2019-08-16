@@ -145,14 +145,21 @@ function createNewUserRow() {
       content.cloneNode(true);
   const userTable = document.getElementById('users-table');
   userTable.appendChild(row);
-}
+  const approveButton = document.getElementById('approve-new-user');
+  approveButton.addEventListener('click', (event) => {
 
-const addNewUserButton = document.getElementById('add-user-btn');
-addNewUserButton.addEventListener('click', (event) => {
-  const addNewUserRow = document.getElementById('table-footer');
-  addNewUserRow.style.display = 'none';
-  createNewUserRow();
-});
+  });
+  const denyButton = document.getElementById('deny-new-user');
+  denyButton.addEventListener('click', (event) => {
+    console.log(userTable);
+    console.log(row);
+
+    const newUserRow = document.getElementById('new-user-row');
+    userTable.removeChild(newUserRow);
+    const addNewUserRow = document.getElementById('table-footer');
+    addNewUserRow.style.display = 'table-footer-group';
+  });
+}
 
 // Toggle side bar
 const toggleButton = document.getElementById('menu-toggle');
@@ -179,6 +186,15 @@ if (usersTable) {
           usersTable.style.display='table';
         });
   });
+
+  const addNewUserButton = document.getElementById('add-user-btn');
+  if (addNewUserButton) {
+    addNewUserButton.addEventListener('click', (event) => {
+      const addNewUserRow = document.getElementById('table-footer');
+      addNewUserRow.style.display = 'none';
+      createNewUserRow();
+    });
+  }
 }
 const sessionTable = document.getElementById('sessions-table');
 const sessionBody = document.getElementById('sessions-body');
