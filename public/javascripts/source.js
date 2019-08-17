@@ -147,13 +147,38 @@ function createNewUserRow() {
   userTable.appendChild(row);
   const approveButton = document.getElementById('approve-new-user');
   approveButton.addEventListener('click', (event) => {
+    const username = document.getElementById('new-username').value;
+    const password = document.getElementById('new-password').value;
+    const password2 = document.getElementById('new-password2').value;
+    const name = document.getElementById('new-name').value;
 
+    fetch(window.location.origin + '/users/create',
+        {method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            username: username,
+            password: password,
+            password2: password2,
+            name: name,
+          }),
+          credentials: 'same-origin'}).then((res) => {
+      return res.json();
+    }).then((res) => {
+      if (!res.errors) {
+        const usersBody = document.getElementById('users-body');
+        const index = usersBody.childElementCount + 1;
+        const userRow = createUserRow(index, username, res.hash, name);
+        usersBody.appendChild(userRow);
+      } else {
+        // TODO handle error with bootstrap notifications/alerts
+        res.errors.forEach((value, key) => {
+          console.log(value);
+        });
+      }
+    });
   });
   const denyButton = document.getElementById('deny-new-user');
   denyButton.addEventListener('click', (event) => {
-    console.log(userTable);
-    console.log(row);
-
     const newUserRow = document.getElementById('new-user-row');
     userTable.removeChild(newUserRow);
     const addNewUserRow = document.getElementById('table-footer');

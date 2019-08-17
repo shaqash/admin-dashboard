@@ -52,4 +52,40 @@ router.post('/sign-up', (req, res, next) => {
   }
 });
 
+router.post('/create', (req, res) => {
+  const {name, username, password, password2} = req.body;
+  const errors = [];
+  if (!req.session.username) {
+    errors('you must be logged in foe this action');
+  } else if (!name || !username || !password || !password2) {
+    errors.push('not all fields are filled');
+  } else if (password !== password2) {
+    errors.push('passwords are not identical');
+  } else if (password.length < 6) {
+    errors.push('password is less than 6 characters');
+  } else {
+    User.findOne({username: username}).then((user) => {
+      if (user) {
+        errors.push('username already exits');
+      } else {
+        bcrypt.hash(password, 10, (err, hash) => {
+          const user = new User({name, username, password: hash});
+          user.save().then(() => {
+            res.send({hash: hash});
+            res.status(200).end();
+          }).catch((rej) => {
+            console.log(rej);
+          });
+        });
+      }
+      if (errors.length) {
+        res.send({errors: errors});
+      }
+    });
+  }
+  if (errors.length) {
+    res.send({errors: errors});
+  }
+});
+
 module.exports = router;
