@@ -169,6 +169,11 @@ function createNewUserRow() {
         const index = usersBody.childElementCount + 1;
         const userRow = createUserRow(index, username, res.hash, name);
         usersBody.appendChild(userRow);
+        // reset value in new user inputs
+        document.querySelectorAll('#new-user-row input').
+            forEach((value, key) =>{
+              value.value = '';
+            });
       } else {
         // TODO handle error with bootstrap notifications/alerts
         res.errors.forEach((value, key) => {
