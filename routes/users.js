@@ -56,7 +56,7 @@ router.post('/create', (req, res) => {
   const {name, username, password, password2} = req.body;
   const errors = [];
   if (!req.session.username) {
-    errors('you must be logged in foe this action');
+    errors.push('you must be logged in for this action');
   } else if (!name || !username || !password || !password2) {
     errors.push('not all fields are filled');
   } else if (password !== password2) {
@@ -72,9 +72,6 @@ router.post('/create', (req, res) => {
           const user = new User({name, username, password: hash});
           user.save().then(() => {
             res.send({hash: hash});
-            res.status(200).end();
-          }).catch((rej) => {
-            console.log(rej);
           });
         });
       }
@@ -83,6 +80,113 @@ router.post('/create', (req, res) => {
       }
     });
   }
+  if (errors.length) {
+    res.send({errors: errors});
+  }
+});
+
+router.post('/update', (req, res) => {
+  const {username, update: {
+    username: newUsername,
+    name: newName,
+    password: newPassword,
+    password2: newPassword2}} = req.body;
+  const errors = [];
+  if (!req.session.username) {
+    errors.push('you must be logged in for this action');
+  } else if (!newUsername && !newName && !newPassword) {
+    errors.push('nothing to update');
+  } else if (newPassword !== newPassword2) {
+    errors.push('passwords do not match');
+  } else {
+    // check the user to update
+    User.findOne({username: username}).then((originalUser) => {
+      if (!originalUser) {
+        errors.push('user does not exists');
+      } else {
+        const updates = {};
+        if (newUsername && originalUser.username !== newUsername) {
+          // check if new username is available
+          User.findOne({username: newUsername}).then((user) => {
+            if (!user) {
+              updates.username = newUsername;
+              if (newName && originalUser.name !== newName) {
+                updates.name = newName;
+              }
+              if (newPassword) {
+                bcrypt.compare(newPassword, originalUser.password).
+                    then((match) => {
+                      if (!match) {
+                        bcrypt.hash(newPassword, 10).then((hash) => {
+                          updates.password = hash;
+                          User.updateOne({username: username}, updates).
+                              then(() => {
+                                res.send(updates);
+                              });
+                        });
+                      } else {
+                        if (updates.username || updates.name) {
+                          User.updateOne({username: username}, updates).
+                              then(() => {
+                                res.send(updates);
+                              });
+                        }
+                      }
+                    });
+              } else {
+                if (updates.username || updates.name) {
+                  User.updateOne({username: username}, updates).then(() => {
+                    res.send(updates);
+                  });
+                }
+              }
+            } else {
+              errors.push('username already exists');
+            }
+            if (errors.length) {
+              res.send({errors: errors});
+            }
+          });
+        } else {
+          if (newName && originalUser.name !== newName) {
+            updates.name = newName;
+          }
+          if (newPassword) {
+            bcrypt.compare(newPassword, originalUser.password).then((match) => {
+              if (!match) {
+                bcrypt.hash(newPassword, 10).then((hash) => {
+                  updates.password = hash;
+                  User.updateOne({username: username}, updates).then(() => {
+                    res.send(updates);
+                  });
+                });
+              } else {
+                if (updates.username || updates.name) {
+                  User.updateOne({username: username}, updates).then(() => {
+                    res.send(updates);
+                  });
+                } else {
+                  errors.push('nothing to update');
+                }
+              }
+            });
+          } else {
+            if (updates.username || updates.name) {
+              User.updateOne({username: username}, updates).then(() => {
+                res.send(updates);
+              });
+            } else {
+              errors.push('nothing to update');
+            }
+          }
+        }
+      }
+      if (errors.length) {
+        res.send({errors: errors});
+      }
+    });
+  }
+
   if (errors.length) {
     res.send({errors: errors});
   }

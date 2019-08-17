@@ -79,15 +79,120 @@ function createDestroyButton(sessionId, index) {
   return button;
 }
 
+
 /**
- * Creates an update button
- * @param {*} username
+ * Creates an update button for user row
+ *
+ * @param {string} index
  * @return {object} button element
  */
-function createUpdateButton(username) {
+function createUpdateButton(index) {
   const button = createButton('fa-edit');
   button.addEventListener('click', () => {
-    // TODO complete update feature use input tags and text-align center
+    const userRow = document.getElementById(`${index}-user-row`);
+    const username = userRow.children[1].innerText;
+    const name = userRow.children[3].innerText;
+    for (let i = 1; i <= 5; i++) {
+      userRow.children[i].style.display = 'none';
+    }
+    const tableData = [];
+    // username update field
+    const usernameUpdate = document.createElement('td');
+    const usernameUpdateInput = document.createElement('input');
+    usernameUpdateInput.classList.add('form-control');
+    usernameUpdateInput.value = username;
+    usernameUpdateInput.type = 'text';
+    usernameUpdateInput.placeholder = 'Username';
+    usernameUpdate.appendChild(usernameUpdateInput);
+    tableData.push(usernameUpdate);
+    // password update fields
+    const passwordUpdate = document.createElement('td');
+    const passwordUpdateInput = document.createElement('input');
+    const passwordWrapper = document.createElement('div');
+    passwordWrapper.classList.add('password-wrapper');
+    passwordUpdateInput.classList.add('form-control');
+    passwordUpdateInput.type = 'password';
+    passwordUpdateInput.placeholder = 'Password';
+    passwordUpdateInput.style.marginRight = '2em';
+    const password2UpdateInput = document.createElement('input');
+    password2UpdateInput.classList.add('form-control');
+    password2UpdateInput.type = 'password';
+    password2UpdateInput.placeholder = 'Confirm password';
+    passwordWrapper.appendChild(passwordUpdateInput);
+    passwordWrapper.appendChild(password2UpdateInput);
+    passwordUpdate.appendChild(passwordWrapper);
+    tableData.push(passwordUpdate);
+    // name update fields
+    const nameUpdate = document.createElement('td');
+    const nameUpdateInput = document.createElement('input');
+    nameUpdateInput.classList.add('form-control');
+    nameUpdateInput.value = name;
+    nameUpdateInput.type = 'text';
+    nameUpdateInput.placeholder = 'Name';
+    nameUpdate.appendChild(nameUpdateInput);
+    tableData.push(nameUpdate);
+    // approve and deny buttons
+    const allowButtonTd = document.createElement('td');
+    const allowButton = createButton('fa-check');
+    allowButton.classList.add('green-hover');
+    allowButtonTd.appendChild(allowButton);
+    allowButton.addEventListener('click', (event) => {
+      fetch(window.location.origin + '/users/update',
+          {method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              username: username,
+              update: {
+                username: usernameUpdateInput.value,
+                password: passwordUpdateInput.value,
+                password2: password2UpdateInput.value,
+                name: nameUpdateInput.value,
+              },
+            }),
+            credentials: 'same-origin',
+          }).then((res) => {
+        return res.json();
+      }).then((res) => {
+        if (!res.errors) {
+          tableData.forEach((value, key) => {
+            userRow.removeChild(value);
+            if (res.username) {
+              userRow.children[1].innerText = res.username;
+            }
+            if (res.password) {
+              userRow.children[2].innerText = res.password;
+            }
+            if (res.name) {
+              userRow.children[3].innerText = res.name;
+            }
+            for (let i = 1; i <= 5; i++) {
+              userRow.children[i].style.display = 'table-cell';
+            }
+          });
+        } else {
+          res.errors.forEach((value, key) => {
+            console.log(value);
+          });
+        }
+      });
+    });
+    const denyButtonTd = document.createElement('td');
+    const denyButton = createButton('fa-times');
+    denyButton.classList.add('red-hover');
+    denyButtonTd.appendChild(denyButton);
+    denyButton.addEventListener('click', (event) => {
+      tableData.forEach((value, key) => {
+        userRow.removeChild(value);
+        for (let i = 1; i <= 5; i++) {
+          userRow.children[i].style.display = 'table-cell';
+        }
+      });
+    });
+    tableData.push(allowButtonTd);
+    tableData.push(denyButtonTd);
+    tableData.forEach((value, key) => {
+      userRow.appendChild(value);
+    });
   });
   return button;
 }
@@ -112,7 +217,7 @@ function createUserRow(index, username, password, name) {
   const nameElement = makeElement('td', name);
   row.appendChild(nameElement);
   const editButton = document.createElement('td');
-  editButton.appendChild(createUpdateButton(username));
+  editButton.appendChild(createUpdateButton(index));
   row.appendChild(editButton);
   const trashButton = document.createElement('td');
   trashButton.appendChild(createDeleteButton(username, index));
