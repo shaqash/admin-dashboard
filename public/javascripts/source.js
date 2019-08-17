@@ -42,6 +42,15 @@ function createDeleteButton(username, index) {
         const table = document.getElementById('users-body');
         const row = document.getElementById(`${index}-user-row`);
         table.removeChild(row);
+
+        // update indexes and id
+        userRow = document.getElementById(`${index+1}-user-row`);
+        while (userRow) {
+          userRow.id = `${index}-user-row`;
+          userRow.firstChild.innerText = index;
+          index++;
+          userRow = document.getElementById(`${index+1}-user-row`);
+        }
       }
     });
   });
