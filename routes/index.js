@@ -12,9 +12,7 @@ const bcrypt = require('bcrypt');
 /* GET home page. */
 router.get('/', function(req, res) {
   if (req.session.username) {
-    res.render('home', {
-      name: req.session.name,
-    });
+    res.render('home', {name: req.session.name});
   } else {
     res.redirect('/login');
   }
@@ -22,9 +20,7 @@ router.get('/', function(req, res) {
 
 router.get('/login', function(req, res) {
   if (req.session.username) {
-    res.render('login', {
-      error: 'Your other users will be logged out',
-    });
+    res.render('login', {error: 'Your other users will be logged out'});
   } else {
     res.render('login');
   }
@@ -36,9 +32,7 @@ router.get('/sign-up', function(req, res) {
 
 router.get('/home', (req, res) => {
   if (req.session.username) {
-    res.render('home', {
-      name: req.session.name,
-    });
+    res.render('home', {name: req.session.name});
   } else {
     res.redirect('/login');
   }
@@ -50,19 +44,12 @@ router.get('/sign-out', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-  const {
-    username,
-    password,
-  } = req.body;
+  const {username, password} = req.body;
 
   if (!username || !password) {
-    res.render('login', {
-      error: 'Please enter username and password',
-    });
+    res.render('login', {error: 'Please enter username and password'});
   } else {
-    User.findOne({
-      username: username,
-    }).then((user) => {
+    User.findOne({username: username}).then((user) => {
       if (user) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (isMatch) {
@@ -70,17 +57,13 @@ router.post('/login', (req, res, next) => {
             req.session.name = user.name;
             res.redirect('/');
           } else {
-            res.render('login', {
-              error: 'Incorrect username or password',
-            });
+            res.render('login', {error: 'Incorrect username or password'});
           }
         });
       } else {
-        res.render('login', {
-          error: 'Incorrect username or password',
-        });
+        res.render('login', {error: 'Incorrect username or password'});
       }
-    });
+    } );
   }
 });
 

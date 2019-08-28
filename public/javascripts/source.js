@@ -36,10 +36,8 @@ function createDeleteButton(username, index) {
   const button = createButton('fa-trash');
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
-    fetch(`${window.location.origin}/users/${username}`, {
-      method: 'DELETE',
-      credentials: 'same-origin',
-    }).then((res) => {
+    fetch(`${window.location.origin}/users/${username}`, {method: 'DELETE',
+      credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
         const table = document.getElementById('users-body');
         const row = document.getElementById(`${index}-user-row`);
@@ -69,10 +67,8 @@ function createDestroyButton(sessionId, index) {
   const button = createButton('fa-trash');
   button.classList.add('delete-button');
   button.addEventListener('click', () => {
-    fetch(`${window.location.origin}/sessions/${sessionId}`, {
-      method: 'DELETE',
-      credentials: 'same-origin',
-    }).then((res) => {
+    fetch(`${window.location.origin}/sessions/${sessionId}`, {method: 'DELETE',
+      credentials: 'same-origin'}).then((res) => {
       if (res.status === 200) {
         const table = document.getElementById('sessions-body');
         const row = document.getElementById(`${index}-session-row`);
@@ -141,22 +137,20 @@ function createUpdateButton(index) {
     allowButton.classList.add('green-hover');
     allowButtonTd.appendChild(allowButton);
     allowButton.addEventListener('click', (event) => {
-      fetch(window.location.origin + '/users/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          update: {
-            username: usernameUpdateInput.value,
-            password: passwordUpdateInput.value,
-            password2: password2UpdateInput.value,
-            name: nameUpdateInput.value,
-          },
-        }),
-        credentials: 'same-origin',
-      }).then((res) => {
+      fetch(window.location.origin + '/users/update',
+          {method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              username: username,
+              update: {
+                username: usernameUpdateInput.value,
+                password: passwordUpdateInput.value,
+                password2: password2UpdateInput.value,
+                name: nameUpdateInput.value,
+              },
+            }),
+            credentials: 'same-origin',
+          }).then((res) => {
         return res.json();
       }).then((res) => {
         if (!res.errors) {
@@ -272,19 +266,16 @@ function createNewUserRow() {
     const password2 = document.getElementById('new-password2').value;
     const name = document.getElementById('new-name').value;
 
-    fetch(window.location.origin + '/users/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        password2: password2,
-        name: name,
-      }),
-      credentials: 'same-origin',
-    }).then((res) => {
+    fetch(window.location.origin + '/users/create',
+        {method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            username: username,
+            password: password,
+            password2: password2,
+            name: name,
+          }),
+          credentials: 'same-origin'}).then((res) => {
       return res.json();
     }).then((res) => {
       if (!res.errors) {
@@ -294,7 +285,7 @@ function createNewUserRow() {
         usersBody.appendChild(userRow);
         // reset value in new user inputs
         document.querySelectorAll('#new-user-row input').
-            forEach((value, key) => {
+            forEach((value, key) =>{
               value.value = '';
             });
       } else {
@@ -327,18 +318,16 @@ const usersTable = document.getElementById('users-table');
 const usersBody = document.getElementById('users-body');
 if (usersTable) {
   document.addEventListener('DOMContentLoaded', (event) => {
-    fetch(window.location.origin + '/users/json', {
-      credentials: 'same-origin',
-    })
+    fetch(window.location.origin + '/users/json', {credentials: 'same-origin'})
         .then((res) => {
           return res.json();
         }).then((json) => {
           json.forEach((value, key) => {
-            const row = createUserRow(key + 1, value.username, value.password,
+            const row = createUserRow(key+1, value.username, value.password,
                 value.name);
             usersBody.appendChild(row);
           });
-          usersTable.style.display = 'table';
+          usersTable.style.display='table';
         });
   });
 
@@ -355,19 +344,18 @@ const sessionTable = document.getElementById('sessions-table');
 const sessionBody = document.getElementById('sessions-body');
 if (sessionTable) {
   document.addEventListener('DOMContentLoaded', (event) => {
-    fetch(window.location.origin + '/sessions/json', {
-      credentials: 'same-origin',
-    })
+    fetch(window.location.origin + '/sessions/json',
+        {credentials: 'same-origin'})
         .then((res) => {
           return res.json();
         }).then((json) => {
           json.forEach((value, key) => {
             const username = JSON.parse(value.session)['username'];
-            const row = createSessionRow(key + 1, username, value.expires,
+            const row = createSessionRow(key+1, username, value.expires,
                 value._id);
             sessionBody.appendChild(row);
           });
-          sessionTable.style.display = 'table';
+          sessionTable.style.display='table';
         });
   });
 }

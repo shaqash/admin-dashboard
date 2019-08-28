@@ -4,7 +4,7 @@ const router = new express.Router();
 const bcrypt = require('bcrypt');
 
 /* GET users listing. */
-router.get('/json', (req, res, next) => {
+router.get('/json', (req, res, next)=>{
   if (!req.session.username) {
     res.status(403).send('403 - forbidden');
   } else {
@@ -15,63 +15,36 @@ router.get('/json', (req, res, next) => {
 });
 
 router.delete('/:username', (req, res, next) => {
-  const {
-    username,
-  } = req.params;
+  const {username} = req.params;
   if (!req.session.username) {
     res.status(403).send('403 - forbidden');
   } else {
-    User.deleteOne({
-      'username': username,
-    }, (err) => {
+    User.deleteOne({'username': username}, (err) => {
       if (err) return next(err);
-      res.render('home', {
-        success: 'Deletion successful',
-      });
+      res.render('home', {success: 'Deletion successful'});
     });
   }
 });
 
 router.post('/sign-up', (req, res, next) => {
-  const {
-    name,
-    username,
-    password,
-    password2,
-  } = req.body;
+  const {name, username, password, password2} = req.body;
   if (!name || !username || !password || !password2) {
-    res.render('sign-up', {
-      error: 'not all fields are filled',
-    });
+    res.render('sign-up', {error: 'not all fields are filled'});
   } else if (password !== password2) {
-    res.render('sign-up', {
-      error: 'passwords must match',
-    });
+    res.render('sign-up', {error: 'passwords must match'});
   } else if (password.length < 6) {
-    res.render('sign-up', {
-      error: 'password needs to be 6 characters or ' +
-        'longer',
-    });
+    res.render('sign-up', {error: 'password needs to be 6 characters or ' +
+     'longer'});
   } else {
-    User.findOne({
-      username: username,
-    }).then((user) => {
+    User.findOne({username: username}).then((user) => {
       if (user) {
-        res.render('sign-up', {
-          error: 'username already exits',
-        });
+        res.render('sign-up', {error: 'username already exits'});
       } else {
         bcrypt.hash(password, 10, (err, hash) => {
-          const user = new User({
-            name,
-            username,
-            password: hash,
-          });
+          const user = new User({name, username, password: hash});
           user.save().then(() => {
             // TODO change url to /login when signing up
-            res.render('login', {
-              success: 'Sign up successful, please log in',
-            });
+            res.render('login', {success: 'Sign up successful, please log in'});
           });
         });
       }
@@ -80,12 +53,7 @@ router.post('/sign-up', (req, res, next) => {
 });
 
 router.post('/create', (req, res) => {
-  const {
-    name,
-    username,
-    password,
-    password2,
-  } = req.body;
+  const {name, username, password, password2} = req.body;
   const errors = [];
   if (!req.session.username) {
     errors.push('you must be logged in for this action');
@@ -96,49 +64,33 @@ router.post('/create', (req, res) => {
   } else if (password.length < 6) {
     errors.push('password is less than 6 characters');
   } else {
-    User.findOne({
-      username: username,
-    }).then((user) => {
+    User.findOne({username: username}).then((user) => {
       if (user) {
         errors.push('username already exits');
       } else {
         bcrypt.hash(password, 10, (err, hash) => {
-          const user = new User({
-            name,
-            username,
-            password: hash,
-          });
+          const user = new User({name, username, password: hash});
           user.save().then(() => {
-            res.send({
-              hash: hash,
-            });
+            res.send({hash: hash});
           });
         });
       }
       if (errors.length) {
-        res.send({
-          errors: errors,
-        });
+        res.send({errors: errors});
       }
     });
   }
   if (errors.length) {
-    res.send({
-      errors: errors,
-    });
+    res.send({errors: errors});
   }
 });
 
 router.post('/update', (req, res) => {
-  const {
-    username,
-    update: {
-      username: newUsername,
-      name: newName,
-      password: newPassword,
-      password2: newPassword2,
-    },
-  } = req.body;
+  const {username, update: {
+    username: newUsername,
+    name: newName,
+    password: newPassword,
+    password2: newPassword2}} = req.body;
   const errors = [];
   if (!req.session.username) {
     errors.push('you must be logged in for this action');
@@ -148,18 +100,14 @@ router.post('/update', (req, res) => {
     errors.push('passwords do not match');
   } else {
     // check the user to update
-    User.findOne({
-      username: username,
-    }).then((originalUser) => {
+    User.findOne({username: username}).then((originalUser) => {
       if (!originalUser) {
         errors.push('user does not exists');
       } else {
         const updates = {};
         if (newUsername && originalUser.username !== newUsername) {
           // check if new username is available
-          User.findOne({
-            username: newUsername,
-          }).then((user) => {
+          User.findOne({username: newUsername}).then((user) => {
             if (!user) {
               updates.username = newUsername;
               if (newName && originalUser.name !== newName) {
@@ -171,18 +119,14 @@ router.post('/update', (req, res) => {
                       if (!match) {
                         bcrypt.hash(newPassword, 10).then((hash) => {
                           updates.password = hash;
-                          User.updateOne({
-                            username: username,
-                          }, updates).
+                          User.updateOne({username: username}, updates).
                               then(() => {
                                 res.send(updates);
                               });
                         });
                       } else {
                         if (updates.username || updates.name) {
-                          User.updateOne({
-                            username: username,
-                          }, updates).
+                          User.updateOne({username: username}, updates).
                               then(() => {
                                 res.send(updates);
                               });
@@ -191,9 +135,7 @@ router.post('/update', (req, res) => {
                     });
               } else {
                 if (updates.username || updates.name) {
-                  User.updateOne({
-                    username: username,
-                  }, updates).then(() => {
+                  User.updateOne({username: username}, updates).then(() => {
                     res.send(updates);
                   });
                 }
@@ -202,9 +144,7 @@ router.post('/update', (req, res) => {
               errors.push('username already exists');
             }
             if (errors.length) {
-              res.send({
-                errors: errors,
-              });
+              res.send({errors: errors});
             }
           });
         } else {
@@ -216,17 +156,13 @@ router.post('/update', (req, res) => {
               if (!match) {
                 bcrypt.hash(newPassword, 10).then((hash) => {
                   updates.password = hash;
-                  User.updateOne({
-                    username: username,
-                  }, updates).then(() => {
+                  User.updateOne({username: username}, updates).then(() => {
                     res.send(updates);
                   });
                 });
               } else {
                 if (updates.username || updates.name) {
-                  User.updateOne({
-                    username: username,
-                  }, updates).then(() => {
+                  User.updateOne({username: username}, updates).then(() => {
                     res.send(updates);
                   });
                 } else {
@@ -236,9 +172,7 @@ router.post('/update', (req, res) => {
             });
           } else {
             if (updates.username || updates.name) {
-              User.updateOne({
-                username: username,
-              }, updates).then(() => {
+              User.updateOne({username: username}, updates).then(() => {
                 res.send(updates);
               });
             } else {
@@ -248,17 +182,13 @@ router.post('/update', (req, res) => {
         }
       }
       if (errors.length) {
-        res.send({
-          errors: errors,
-        });
+        res.send({errors: errors});
       }
     });
   }
 
   if (errors.length) {
-    res.send({
-      errors: errors,
-    });
+    res.send({errors: errors});
   }
 });
 
