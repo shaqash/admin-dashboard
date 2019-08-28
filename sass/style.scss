@@ -1,6 +1,7 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 $fa-font-path:"fonts";
 @import "../node_modules/font-awesome/scss/font-awesome";
+
 .icon-user {
   @extend .fa;
   @extend .fa-user;
@@ -36,33 +37,41 @@ $fa-font-path:"fonts";
 
 .table {
   text-align: center;
+
   button {
     padding: 0;
   }
 
   .btn:hover {
-    color:#007bff;
+    color: #007bff;
   }
 
-  .delete-button:hover,#deny-new-user:hover,.red-hover:hover{
-    color:rgb(212, 0, 0)
+  .delete-button:hover,
+  #deny-new-user:hover,
+  .red-hover:hover {
+    color: rgb(212, 0, 0)
   }
 
   td {
     vertical-align: center;
     vertical-align: -moz-middle-with-baseline;
+
     input {
       text-align: center;
       display: inline;
 
     }
+
     .password-wrapper {
       display: flex;
     }
+
     #new-password {
       margin-right: 2em;
     }
-    #approve-new-user:hover,.green-hover:hover{
+
+    #approve-new-user:hover,
+    .green-hover:hover {
       color: rgb(0, 202, 0);
     }
   }
