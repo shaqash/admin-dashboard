@@ -7,12 +7,12 @@ $ npm install
 $ sudo -i npm install -g concurrently nodemon sass
 ```
 
-### Run
-```
-$ npm start
-```
-
 ### Start db
 ```
 $ sudo systemctl start mongod
+```
+
+### Run
+```
+$ npm start
 ```
