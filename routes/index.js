@@ -49,39 +49,87 @@ router.get('/sign-out', (req, res) => {
   res.redirect('/login');
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   const {
     username,
     password,
   } = req.body;
 
-  if (!username || !password) {
+  if (filled(username, password)) {
+    loginUser(username, password, req, res);
+  } else {
     res.render('login', {
       error: 'Please enter username and password',
     });
-  } else {
-    User.findOne({
-      username: username,
-    }).then((user) => {
-      if (user) {
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (isMatch) {
-            req.session.username = user.username;
-            req.session.name = user.name;
-            res.redirect('/');
-          } else {
-            res.render('login', {
-              error: 'Incorrect username or password',
-            });
-          }
-        });
-      } else {
-        res.render('login', {
-          error: 'Incorrect username or password',
-        });
-      }
-    });
   }
 });
+
+/**
+ * Checks if the fields are filled.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @return {boolean} true if fields are filled, false otherwise.
+ */
+function filled(username, password) {
+  if (!username || !password) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+/**
+ * Gets the user from the database.
+ *
+ * @param {string} username
+ * @return {User}
+ */
+async function getUser(username) {
+  return User.findOne({
+    username: username,
+  }).exec();
+}
+
+/**
+ * Checks if the password matches the hash.
+ *
+ * @param {User} user
+ * @param {string} password
+ * @return {boolean}
+ */
+async function matchPassword(user, password) {
+  try {
+    return await bcrypt.compare(password, user.password);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
+ * Logs the user if the credentials are right, otherwise redirect to error page.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @param {Request} req
+ * @param {Response} res
+ */
+async function loginUser(username, password, req, res) {
+  const user = await getUser(username);
+  let success = false;
+  if (user) {
+    if (await matchPassword(user, password)) {
+      req.session.username = user.username;
+      req.session.name = user.name;
+      res.redirect('/');
+      success = true;
+    }
+  }
+  if (!success) {
+    res.render('login', {
+      error: 'Incorrect username or password',
+    });
+  }
+}
 
 module.exports = router;
