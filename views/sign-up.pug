@@ -12,7 +12,7 @@ block content
             button.close(type='button' data-dismiss='alert' aria-label='Close')
               span(aria-hidden='true') &times;
 
-        form.sign-form.mx-auto(action="/users/sign-up", method="post")
+        form.sign-form.mx-auto(action="/sign-up", method="post")
           .form-group
             label(name='name') Name
             input.form-control(type="text", name='name', id='name', required)
@@ -25,6 +25,10 @@ block content
           .form-group
             label(name='password2') Confirm password
             input.form-control(type="password", name='password2', id='password2', required)
+          .form-group
+            | !{validate}
+            p
+            input.form-control(type='captcha', name='captcha' id='captcha' placeholder='captcha', required)
           button.btn.btn-primary(type="submit") Sign Up
         br
         ul.nav.nav-pills.flex-row

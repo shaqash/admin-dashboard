@@ -38,8 +38,9 @@ router.post('/sign-up', (req, res, next) => {
     username,
     password,
     password2,
+    captcha,
   } = req.body;
-  if (!name || !username || !password || !password2) {
+  if (!name || !username || !password || !password2 || !captcha) {
     res.render('sign-up', {
       error: 'not all fields are filled',
     });
@@ -51,6 +52,10 @@ router.post('/sign-up', (req, res, next) => {
     res.render('sign-up', {
       error: 'password needs to be 6 characters or ' +
         'longer',
+    });
+  } else if (req.session.captcha !== captcha) {
+    res.render('sign-up', {
+      error: 'Wrong captcha',
     });
   } else {
     User.findOne({
