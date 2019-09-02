@@ -98,12 +98,7 @@ router.get('/login', (req, res) => {
       error: 'Your other users will be logged out',
     });
   } else {
-    console.log(res.locals.success);
-    if (req.locals.success) {
-      res.render('login', {success: req.locals.success});
-    } else {
-      res.render('login');
-    }
+    res.render('login');
   }
 });
 
