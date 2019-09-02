@@ -14,5 +14,8 @@ $ sudo systemctl start mongod
 
 ### Run
 ```
-$ npm start
+// For production
+$ npm start / npm run start
+// For development
+$ npm run dev
 ```

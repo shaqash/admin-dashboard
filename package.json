@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"nodemon ./bin/www\" \"sass --watch sass:./public/stylesheets/\""
+    "dev": "concurrently \"nodemon ./bin/www\" \"sass --watch sass:./public/stylesheets/\"",
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
