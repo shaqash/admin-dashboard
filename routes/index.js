@@ -83,7 +83,8 @@ function filled(username, password) {
  * Gets the user from the database.
  *
  * @param {string} username
- * @return {User}
+ * @return {Promise<User>} A promise that contains the user if the username
+ * exists
  */
 async function getUser(username) {
   return User.findOne({
@@ -96,14 +97,11 @@ async function getUser(username) {
  *
  * @param {User} user
  * @param {string} password
- * @return {boolean}
+ * @return {Promise<boolean>} A promise that returns if the password matched
+ * the hash
  */
 async function matchPassword(user, password) {
-  try {
-    return await bcrypt.compare(password, user.password);
-  } catch (error) {
-    console.log(error);
-  }
+  return bcrypt.compare(password, user.password);
 }
 
 /**
