@@ -14,21 +14,22 @@ router.get('/json', (req, res, next) => {
   }
 });
 
-router.delete('/:username', (req, res, next) => {
+router.delete('/:username', async (req, res, next) => {
   const {
     username,
   } = req.params;
+  let deletedCount = 0;
   if (!req.session.username) {
     res.status(403).send('403 - forbidden');
   } else {
-    User.deleteOne({
+    deletedCount = await User.deleteOne({
       'username': username,
-    }, (err) => {
-      if (err) return next(err);
-      res.render('home', {
-        success: 'Deletion successful',
-      });
-    });
+    }).exec();
+    if (deletedCount) {
+      res.send('ok');
+    } else {
+      next('delete error');
+    }
   }
 });
 
